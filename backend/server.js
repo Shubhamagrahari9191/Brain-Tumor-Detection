@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5001;
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // In-memory storage for predictions (no MongoDB required)
 const predictionHistory = [];
@@ -19,7 +19,7 @@ const predictionHistory = [];
 // Multer Config
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'uploads/');
+        cb(null, path.join(__dirname, 'uploads/'));
     },
     filename: (req, file, cb) => {
         cb(null, Date.now() + path.extname(file.originalname));
@@ -54,7 +54,7 @@ app.post('/api/predict', upload.single('image'), (req, res) => {
 
             // Save to in-memory storage
             const newPrediction = {
-                imagePath: imagePath,
+                imagePath: 'uploads/' + req.file.filename,
                 prediction: predictionResult.class,
                 confidence: predictionResult.confidence,
                 timestamp: new Date()
@@ -84,5 +84,14 @@ app.get('/api/history', async (req, res) => {
         res.status(500).json({ error: 'Could not fetch history' });
     }
 });
+
+// Serve static assets from frontend build if available
+const distPath = path.join(__dirname, '../frontend/dist');
+if (fs.existsSync(distPath)) {
+    app.use(express.static(distPath));
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(distPath, 'index.html'));
+    });
+}
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
