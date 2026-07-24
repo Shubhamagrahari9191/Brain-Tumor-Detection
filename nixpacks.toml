@@ -1,9 +1,7 @@
-[phases.setup]
-nixPkgs = [
-  "nodejs_18",
-  "python311"
-]
+providers = ["...", "python"]
 
+[phases.setup]
+nixPkgs = ["...", "python311"]
 
 [phases.install]
 cmds = [
@@ -14,12 +12,10 @@ cmds = [
   "python -m pip install -r backend/requirements.txt"
 ]
 
-
 [phases.build]
 cmds = [
   "cd frontend && npm run build"
 ]
-
 
 [start]
 cmd = "cd backend && npm start"
