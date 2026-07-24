@@ -1,1 +1,19 @@
+# Dependency directories
+node_modules/
+backend/node_modules/
+frontend/node_modules/
+
+# Production build outputs
+frontend/dist/
+
+# Local uploads
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# System files
+.DS_Store
+backend/.DS_Store
+frontend/.DS_Store
+
+# Model files
 brain_tumor_model.keras

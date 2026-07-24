@@ -63,7 +63,7 @@ app.post('/api/predict', upload.single('image'), (req, res) => {
     const pythonCommand =
         process.platform === "win32"
             ? "python"
-            : "python";
+            : "python3";
 
 
 
