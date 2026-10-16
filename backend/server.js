@@ -235,7 +235,19 @@ app.get('/api/history', (req, res) => {
 
 
 
-// Serve React frontend build
+// Root API Health Check
+app.get('/', (req, res) => {
+    res.json({
+        status: 'online',
+        service: 'Brain Tumor Detection Backend API',
+        endpoints: {
+            predict: 'POST /api/predict',
+            history: 'GET /api/history'
+        }
+    });
+});
+
+// Serve React frontend build (if present)
 const distPath =
     path.join(__dirname, '../frontend/dist');
 
