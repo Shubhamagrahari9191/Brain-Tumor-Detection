@@ -9,7 +9,7 @@ print("Loading model...")
 model = load_model('brain_tumor_model.keras')
 
 # Define test dir
-test_dir = 'archive (2)/Testing'
+test_dir = 'images/testing' if os.path.exists('images/testing') else 'images/Testing'
 classes = ['glioma', 'meningioma', 'notumor', 'pituitary']
 
 # Assumed mapping based on alphabetical order

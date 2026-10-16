@@ -30,7 +30,7 @@ def predict(img_path):
     return predicted_class
 
 # Random test logic
-test_dir = 'archive (2)/Testing'
+test_dir = 'images/testing' if os.path.exists('images/testing') else 'images/Testing'
 all_images = []
 for root, dirs, files in os.walk(test_dir):
     for file in files:

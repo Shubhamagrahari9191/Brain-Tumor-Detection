@@ -12,8 +12,7 @@ backend/uploads/*
 
 # System files
 .DS_Store
-backend/.DS_Store
-frontend/.DS_Store
+**/.DS_Store
 
 # Model files
 brain_tumor_model.keras

@@ -5,7 +5,10 @@
   "scripts": {
     "install-all": "cd frontend && npm install && cd ../backend && npm install",
     "build": "cd frontend && npm install && npm run build && cd ../backend && npm install",
-    "start": "cd backend && npm start"
+    "start": "cd backend && npm start",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev": "node -e \"const { spawn } = require('child_process'); const b = spawn('npm', ['run', 'dev'], { cwd: 'backend', stdio: 'inherit', shell: true }); const f = spawn('npm', ['run', 'dev'], { cwd: 'frontend', stdio: 'inherit', shell: true }); process.on('SIGINT', () => { b.kill(); f.kill(); process.exit(); });\""
   },
  "engines": {
   "node": "22.x"

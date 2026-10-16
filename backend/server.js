@@ -24,10 +24,15 @@ const predictionHistory = [];
 
 
 // Multer Configuration
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
 const storage = multer.diskStorage({
 
     destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, 'uploads/'));
+        cb(null, uploadsDir);
     },
 
     filename: (req, file, cb) => {
@@ -266,6 +271,7 @@ if(fs.existsSync(distPath)){
 // Start Server
 app.listen(
     PORT,
+    '0.0.0.0',
     ()=>{
         console.log(
             `Server running on port ${PORT}`

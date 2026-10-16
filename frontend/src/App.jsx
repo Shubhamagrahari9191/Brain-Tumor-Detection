@@ -25,8 +25,12 @@ function App() {
     formData.append('image', file);
 
     try {
-      // Point to /api/predict (supported by local proxy and Vercel serverless)
-      const response = await axios.post('/api/predict', formData, {
+      // Use VITE_API_URL if configured for separate deployment, else fallback to relative /api
+      let apiBase = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.trim().replace(/\/$/, '') : '';
+      if (apiBase && !apiBase.startsWith('http://') && !apiBase.startsWith('https://')) {
+        apiBase = `https://${apiBase}`;
+      }
+      const response = await axios.post(`${apiBase}/api/predict`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

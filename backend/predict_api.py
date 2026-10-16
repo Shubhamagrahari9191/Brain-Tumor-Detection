@@ -62,7 +62,12 @@ def predict(img_path, orig_name=None):
         except ImportError:
             has_dependencies = False
 
-        model_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../brain_tumor_model.keras'))
+        model_paths = [
+            os.path.abspath(os.path.join(os.path.dirname(__file__), '../brain_tumor_model.keras')),
+            os.path.abspath(os.path.join(os.path.dirname(__file__), 'brain_tumor_model.keras')),
+            os.path.abspath('brain_tumor_model.keras')
+        ]
+        model_path = next((p for p in model_paths if os.path.exists(p)), model_paths[0])
         
         if not has_dependencies or not os.path.exists(model_path):
             predict_mock(img_path, orig_name)
