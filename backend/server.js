@@ -235,11 +235,11 @@ app.get('/api/history', (req, res) => {
 
 
 
-// Root API Health Check
-app.get('/', (req, res) => {
+// API Health Check
+app.get('/api/health', (req, res) => {
     res.json({
         status: 'online',
-        service: 'Brain Tumor Detection Backend API',
+        service: 'Brain Tumor Detection API',
         endpoints: {
             predict: 'POST /api/predict',
             history: 'GET /api/history'
@@ -251,18 +251,13 @@ app.get('/', (req, res) => {
 const distPath =
     path.join(__dirname, '../frontend/dist');
 
-
-
 if(fs.existsSync(distPath)){
-
 
     app.use(
         express.static(distPath)
     );
 
-
     app.get('*', (req,res)=>{
-
 
         res.sendFile(
             path.resolve(
@@ -271,9 +266,22 @@ if(fs.existsSync(distPath)){
             )
         );
 
-
     });
 
+} else {
+
+    // Fallback if frontend dist has not been built
+    app.get('/', (req, res) => {
+        res.json({
+            status: 'online',
+            service: 'Brain Tumor Detection Backend API',
+            note: 'Frontend dist not found. Run npm run build at root.',
+            endpoints: {
+                predict: 'POST /api/predict',
+                history: 'GET /api/history'
+            }
+        });
+    });
 
 }
 

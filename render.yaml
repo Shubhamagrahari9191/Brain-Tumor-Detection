@@ -1,12 +1,11 @@
 services:
-  # Backend Web Service
+  # Full-Stack Web Service (Serves React UI + API)
   - type: web
     name: brain-tumor-backend
     runtime: node
     plan: free
-    rootDir: backend
-    buildCommand: npm install
-    startCommand: node server.js
+    buildCommand: npm run build
+    startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
