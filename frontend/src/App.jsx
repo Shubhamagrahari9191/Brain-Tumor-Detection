@@ -50,13 +50,17 @@ function App() {
       <Navbar />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-white mb-4">
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-medium mb-4">
+            <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
+            <span>MRI-Only Verification Active • Non-MRI Images Rejected</span>
+          </div>
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight mb-4">
             Brain Tumor Detection
           </h1>
           <p className="text-lg text-slate-400 max-w-2xl mx-auto">
-            Upload an MRI scan to detect potential brain tumors using our advanced AI model.
-            We support detection of Glioma, Meningioma, and Pituitary tumors.
+            Upload an authentic Brain MRI scan to classify and detect potential tumors using Deep Learning.
+            Supports detection of <span className="text-slate-200 font-medium">Glioma</span>, <span className="text-slate-200 font-medium">Meningioma</span>, and <span className="text-slate-200 font-medium">Pituitary</span> tumors.
           </p>
         </div>
 

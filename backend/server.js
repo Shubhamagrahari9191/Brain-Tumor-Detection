@@ -43,7 +43,16 @@ const storage = multer.diskStorage({
 
 
 const upload = multer({
-    storage: storage
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+        if (!file.mimetype.startsWith('image/')) {
+            return cb(new Error('Only image files are allowed'), false);
+        }
+        cb(null, true);
+    },
+    limits: {
+        fileSize: 15 * 1024 * 1024 // 15MB limit
+    }
 });
 
 
@@ -62,6 +71,16 @@ app.post('/api/predict', upload.single('image'), (req, res) => {
     const imagePath = req.file.path;
     const absoluteImagePath = path.resolve(imagePath);
 
+    // Helper to safely remove file if rejected
+    const removeUploadedFile = () => {
+        try {
+            if (fs.existsSync(absoluteImagePath)) {
+                fs.unlinkSync(absoluteImagePath);
+            }
+        } catch (cleanupErr) {
+            console.error("Cleanup error:", cleanupErr);
+        }
+    };
 
 
     // Python executable
@@ -113,6 +132,13 @@ app.post('/api/predict', upload.single('image'), (req, res) => {
             const predictionResult =
                 JSON.parse(lastLine);
 
+            // Handle non-MRI rejection or prediction error
+            if (predictionResult.error || predictionResult.is_not_mri) {
+                removeUploadedFile();
+                return res.status(400).json({
+                    error: predictionResult.error || "Uploaded image is not a valid Brain MRI scan."
+                });
+            }
 
 
             const newPrediction = {
@@ -149,6 +175,7 @@ app.post('/api/predict', upload.single('image'), (req, res) => {
 
         catch(error) {
 
+            removeUploadedFile();
 
             console.error(
                 "JSON Parse Error:",
@@ -172,6 +199,7 @@ app.post('/api/predict', upload.single('image'), (req, res) => {
 
     .catch(err => {
 
+        removeUploadedFile();
 
         console.error(
             "PythonShell Error:",
